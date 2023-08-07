@@ -1,7 +1,5 @@
 let bigcont = document.getElementById("bigcont");
 let elform = document.querySelector("form");
-let prev = document.getElementById("prev");
-let next = document.getElementById("next");
 elform.addEventListener("submit",(e)=>{
     e.preventDefault();
     let sdate = document.getElementById("startingdate").value;
@@ -15,6 +13,13 @@ function fetchdata(startdate,enddate,pageno){
     .then((data)=>{
         if(data.data.length>0){
             appendCard(data.data);
+            document.getElementById("pagination").innerHTML = "";
+            let prev = document.createElement("button");
+            prev.textContent = "<";
+            prev.setAttribute("id", "prev");
+            let next = document.createElement("button");;
+            next.textContent = ">";
+            next.setAttribute("id", "next");
             prev.addEventListener("click",(e)=>{
                 e.preventDefault();
                 if (data.meta.current_page>1){
@@ -27,6 +32,7 @@ function fetchdata(startdate,enddate,pageno){
                     fetchdata(startdate, enddate, data.meta.current_page + 1);
                 }
             })
+            document.getElementById("pagination").append(prev, next);
         }
         else{
             let h1 = document.createElement("h1");
@@ -39,6 +45,46 @@ function fetchdata(startdate,enddate,pageno){
     .catch((err)=>{
         console.log(err);
     })
+}
+fetchdat(1);
+function fetchdat( pageno) {
+    fetch(`https://www.balldontlie.io/api/v1/games?per_page=10&page=${pageno}`)
+        .then((res) => res.json())
+        .then((data) => {
+            if (data.data.length > 0) {
+                appendCard(data.data);
+                document.getElementById("pagination").innerHTML="";
+                let prev = document.createElement("button");
+                prev.textContent = "<";
+                prev.setAttribute("id","prev");
+                let next = document.createElement("button");;
+                next.textContent = ">";
+                next.setAttribute("id", "next");
+                prev.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    if (data.meta.current_page > 1) {
+                        fetchdat(data.meta.current_page - 1);
+                    }
+                })
+                next.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    if (data.meta.next_page != null) {
+                        fetchdat(data.meta.current_page + 1);
+                    }
+                })
+                document.getElementById("pagination").append(prev,next);
+            }
+            else {
+                let h1 = document.createElement("h1");
+                h1.textContent = "no data available";
+                bigcont.innerHTML = "";
+                bigcont.append(h1);
+            }
+
+        })
+        .catch((err) => {
+            console.log(err);
+        })
 }
 
 function appendCard(data){

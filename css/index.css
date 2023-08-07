@@ -20,10 +20,38 @@ nav>a {
     align-items: center;
     justify-content: space-between;
 }
+.card>p{
+    font-size: 20px;
+}
 .playerImg{
     width: 80%;
 }
 .playerImg>img{
     width: 100%;
     border-radius: 50%;
+}
+#pagination{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#pagination>button{
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    border: none;
+    background-color: orange;
+    color: white;
+    margin: 10px;
+    border-radius: 20px;
+}
+.teamBtn{
+    width: 150px;
+    height: 25px;
+    font-size: 15px;
+    background-color: blueviolet;
+    color: white;
+    border: none;
+    border-radius: 5px;
+
 }
